@@ -1,3 +1,3 @@
-# @haenah/eslint-plugin
+# @haenah/eslint-config
 
-Eslint plugin for my personal preferences.
+Eslint config for my personal preferences.

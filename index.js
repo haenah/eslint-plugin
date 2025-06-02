@@ -29,7 +29,6 @@ const base = [
       sourceType: "module",
     },
     plugins: {
-      "core-frontend-ts": coreFrontendTsPlugin,
       "unused-imports": unusedImportsPlugin,
     },
     rules: {
@@ -149,4 +148,7 @@ const next = [
   },
 ];
 
-export const coreFrontendEslintConfig = { base, next };
+module.exports = {
+  base,
+  next,
+};
