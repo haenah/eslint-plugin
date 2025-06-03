@@ -14,11 +14,12 @@ import tseslint from "typescript-eslint";
  * @type {import('eslint').Linter.Config[]}\
  * @description JS, TS에서 공통적으로 사용되는 기본 설정
  */
-const base = [
+export const base = [
   {
     files: ["**/*.{js,jsx,cjs,mjs,ts,tsx}"],
     rules: eslint.configs.recommended.rules,
   },
+  { ignores: ["out/", ".vercel/", ".next/", ".turbo/", "dist/"] },
   eslintPluginSortProperties.configs["flat/all"],
   cspellConfigs.recommended,
   importPlugin.flatConfigs.recommended,
@@ -103,16 +104,12 @@ const base = [
 
 /**
  * @type {import('eslint').Linter.Config[]}
- * @description Next.js 프로젝트에서 사용되는 설정
+ * @description React 프로젝트에서 사용되는 설정
  */
-const next = [
+export const react = [
   ...base,
-  { ignores: ["out/", ".vercel/", ".next/", ".turbo/"] },
   {
-    files: ["**/*.{ts,tsx}"],
-    languageOptions: { globals: { ...globals.browser, ...globals.node } },
     plugins: {
-      "@next/next": nextPlugin,
       "jsx-a11y": jsxA11yPlugin,
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
@@ -121,8 +118,6 @@ const next = [
       ...reactPlugin.configs.recommended.rules,
       ...reactPlugin.configs["jsx-runtime"].rules,
       ...reactHooksPlugin.configs.recommended.rules,
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs["core-web-vitals"].rules,
       "jsx-a11y/alt-text": ["warn", { elements: ["img"], img: ["Image"] }],
       "jsx-a11y/aria-props": "warn",
       "jsx-a11y/aria-proptypes": "warn",
@@ -142,13 +137,28 @@ const next = [
       ],
     },
     settings: {
-      next: { rootDir: "." },
       react: { version: "detect" },
     },
   },
 ];
 
-module.exports = {
-  base,
-  next,
-};
+/**
+ * @type {import('eslint').Linter.Config[]}
+ * @description Next.js 프로젝트에서 사용되는 설정
+ */
+export const next = [
+  ...react,
+  {
+    files: ["**/*.{ts,tsx}"],
+    plugins: {
+      "@next/next": nextPlugin,
+    },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
+    },
+    settings: {
+      next: { rootDir: "." },
+    },
+  },
+];
